@@ -35,4 +35,14 @@ RSpec.describe TasksController, type: :controller do
     end
   end
 
+  describe 'tasks#destroy' do
+    it "should allow tasks to be removed" do 
+      task = FactoryBot.create(:task)
+      put :destroy, params: {id: task.id}
+      expect(response).to have_http_status(:success)
+      task = Task.find_by_id(task.id)
+      expect(task).to eq(nil)
+    end
+  end
+
 end
