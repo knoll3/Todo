@@ -44,7 +44,7 @@
       }).success(function(data) {
         var liHtml = taskHtml(data);
         var $li = $("#listItem-" + data.id);
-        $li.remove();
+        $li.slideUp('fast', function() { $(this.remove);});
       });
     };
 
@@ -79,7 +79,8 @@
       $.post("/tasks", payload).success(function(data) {
         var htmlString = taskHtml(data);
         var ulTodos = $('.todo-list');
-        ulTodos.append(htmlString);
+        // ulTodos.append(htmlString);
+        $(htmlString).hide().appendTo(ulTodos).slideDown('fast');
         updateHtml();
         $('.new-todo').val('');
       });
