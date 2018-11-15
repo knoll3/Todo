@@ -58,6 +58,15 @@
       });
     }
 
+    function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+    }
+
     $.get("/tasks").success( function( data ) {
       var htmlString = "";
       $.each(data, function(index, task) {
@@ -73,13 +82,12 @@
       var textbox = $('.new-todo');
       var payload = {
         task: {
-          title: textbox.val()
+          title: escapeHtml(textbox.val())
         }
       };
       $.post("/tasks", payload).success(function(data) {
         var htmlString = taskHtml(data);
         var ulTodos = $('.todo-list');
-        // ulTodos.append(htmlString);
         $(htmlString).hide().appendTo(ulTodos).slideDown('fast');
         updateHtml();
         $('.new-todo').val('');
